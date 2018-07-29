@@ -1,0 +1,60 @@
+<div class="clearfix">
+  <h2 class="float-left mt-4 mb-4">Lista odeljenja:</h2>
+  <button type="button" class="btn btn-success float-right mt-4 mb-4" (click)="open(content)">Dodaj odeljenje</button>
+</div>
+
+<!--  Modal za dodavanje odeljenja  -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header bg-light">
+      <h4 class="modal-title" id="modal-basic-title">Dodaj odeljenje</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form ngNativeValidate #classForm="ngForm" (submit)="addClass()">
+        <div class="form-group">
+          <label for="classNumber">Broj odeljenja:</label>
+          <input type="text" class="form-control" id="classNumber" placeholder="Unesite broj ..."
+            required autofocus maxlength="1" pattern="[1-9{n}]" [(ngModel)]="newClass.classNumber" name="classNumber">
+        </div>
+        <div class="form-group">
+            <label for="year">Školska godina:</label>
+            <select class="form-control" id="year" name="year" [(ngModel)]="newClass.year" required>
+              <option [ngValue]="'FIRST'">Prva</option>
+              <option [ngValue]="'SECOND'">Druga</option>
+              <option [ngValue]="'THIRD'">Treća</option>
+              <option [ngValue]="'FOURTH'">Četvrta</option>
+              <option [ngValue]="'FIFTH'">Peta</option>
+              <option [ngValue]="'SIXTH'">Šesta</option>
+              <option [ngValue]="'SEVENTH'">Sedma</option>
+              <option [ngValue]="'EIGHTH'">Osma</option>
+            </select>
+        </div>
+        <div *ngIf="addedClass" class="alert alert-success mt-4 fade show">Odeljenje je uspešno dodato!</div><hr>
+        <button type="submit" class="btn btn-success" [disabled]="addedClass">Sačuvaj</button>
+      </form>
+    </div>
+  </ng-template>
+
+<!--  Tabela sa svim odeljenjima  -->
+<table class="table table-striped table-hover tabela">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Broj odeljenja</th>
+      <th scope="col">Školska godina</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let class of classes">
+      <th class="clickable" routerLink="/admin/classes/{{class.id}}" scope="row">{{class.id}}</th>
+      <td class="clickable" routerLink="/admin/classes/{{class.id}}">{{class.classNumber}}</td>
+      <td class="clickable" routerLink="/admin/classes/{{class.id}}">{{class.year}}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm float-right" (click)="deleteClass(class.id, class.classNumber)">Ukloni</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

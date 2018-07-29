@@ -1,0 +1,87 @@
+<div class="row detalji">
+  <!--  Detalji odeljenja  -->
+  <div class="col-md-6 detalji-1">
+    <h4>Detalji odeljenja:</h4>
+    <form #forma="ngForm" ngNativeValidate (submit)="updateClass()">
+      <fieldset [disabled]="formDisabled">
+
+        <div class="form-group">
+          <label for="classNumber">Broj Odeljenja:</label>
+          <input type="text" class="form-control" id="classNumber" placeholder="Unesite broj ..." required autofocus maxlength="1"
+          pattern="[1-9{n}]" [(ngModel)]="uclass.classNumber" name="classNumber" disabled>
+        </div>
+        <div class="form-group">
+          <label for="year">Školska godina:</label>
+          <select class="form-control" id="year" name="year" [(ngModel)]="uclass.year" required>
+            <option [ngValue]="'FIRST'">Prva</option>
+            <option [ngValue]="'SECOND'">Druga</option>
+            <option [ngValue]="'THIRD'">Treća</option>
+            <option [ngValue]="'FOURTH'">Četvrta</option>
+            <option [ngValue]="'FIFTH'">Peta</option>
+            <option [ngValue]="'SIXTH'">Šesta</option>
+            <option [ngValue]="'SEVENTH'">Sedma</option>
+            <option [ngValue]="'EIGHTH'">Osma</option>
+          </select>
+        </div>
+
+      </fieldset>
+      <div class="clearfix" *ngIf="formDisabled">
+        <button class="btn btn-outline-primary float-right" type="button" (click)="formDisabled = false; updated = false">Izmeni odeljenje</button>
+        <button class="btn btn-outline-warning float-left" type="button" (click)="goBack()">Idi nazad</button>
+      </div>
+      <div class="clearfix" *ngIf="formDisabled === false">
+        <button class="btn btn-outline-success float-left" type="submit">Sačuvaj izmene</button>
+        <button class="btn btn-outline-warning float-right" type="button" (click)="formDisabled = true">Odustani</button>
+      </div>
+      <div *ngIf="updated" class="alert alert-success mt-4 fade show">Odeljenje je uspešno izmenjeno!</div>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div class="clearfix">
+      <h4 class="float-left mt-2 mb-2">Učenici koji pripadaju odeljenju:</h4>
+      <button type="button" class="btn btn-success float-right mt-2 mb-2" (click)="open(content)">Dodaj učenika</button>
+    </div>
+
+    <!--  Tabela sa učenicima koji pripadaju odeljenju  -->
+    <table class="table table-striped table-hover tabela">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Ime i prezime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students">
+          <th scope="row">{{student.id}}</th>
+          <td>{{student.firstName}} {{student.lastName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--  Modal za dodeljivanje učenika odeljenju  -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header bg-light">
+    <h4 class="modal-title" id="modal-basic-title">Dodeli učenika:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngNativeValidate (ngSubmit)="addStudent()" #courseForm="ngForm">
+      <div class="form-group">
+        <label for="course">Izaberite učenika:</label>
+        <select class="form-control" name="newstudent" [(ngModel)]="newstudent" #course tabindex="5" required>
+          <option *ngFor="let student of allStudents" [ngValue]="student">{{student.firstName + ' ' + student.lastName}}</option>
+        </select>
+      </div>
+      <small>ID: {{newstudent.id}}</small><br>
+      <small>Korisničko ime: {{newstudent.username}}</small><br>
+      <div *ngIf="greska" class="alert alert-danger mt-4 fade show">Greška: učenik već pripada ovom odeljenju.</div>
+      <div *ngIf="dodat" class="alert alert-success mt-4 fade show">Učenik je uspešno dodat!</div>
+      <hr>
+      <button type="submit" class="btn btn-success" [disabled]="dodat" >Dodaj</button>
+    </form>
+  </div>
+</ng-template>

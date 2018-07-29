@@ -1,0 +1,76 @@
+<div class="clearfix">
+  <h2 class="float-left mt-4 mb-4">Lista roditelja:</h2>
+  <button type="button" class="btn btn-success float-right mt-4 mb-4" (click)="open(content)">Dodaj roditelja</button>
+</div>
+
+<!--  Modal za dodavanje roditelja  -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header bg-light">
+    <h4 class="modal-title" id="modal-basic-title">Dodaj roditelja</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngNativeValidate #parentForm="ngForm" (submit)="addParent()">
+      <div class="form-group">
+        <label for="username">Korisnčko ime:</label>
+        <input type="text" class="form-control" id="username" placeholder="Unesite korisničko ime ..."
+          required autofocus minlength="5" maxlength="15" pattern="[a-zA-Z0-9]*" [(ngModel)]="newParent.username" name="username">
+          <div *ngIf="existingUsername" class="help-block text-danger">Korisničko ime već postoji</div>
+      </div>
+      <div class="form-group">
+        <label for="password">Lozinka:</label>
+        <input type="password" class="form-control" id="password" placeholder="Unesite lozinku ..."
+        required minlength="5" maxlength="15" pattern="[a-zA-Z0-9]*" [(ngModel)]="newParent.password" name="password">
+        <div *ngIf="passwordMissmatch" class="help-block text-danger">Lozinke se ne poklapaju</div>
+      </div>
+      <div class="form-group">
+        <label for="password1">Ponovite lozinku:</label>
+        <input type="password" class="form-control" id="password1" placeholder="Unesite lozinku ..."
+        required minlength="5" maxlength="15" pattern="[a-zA-Z0-9]*" [(ngModel)]="newParent.confirmedPassword" name="confirmedPassword">
+        <div *ngIf="passwordMissmatch" class="help-block text-danger">Lozinke se ne poklapaju</div>
+      </div>
+      <div class="form-group">
+        <label for="firstName">Ime:</label>
+        <input type="text" class="form-control" id="firstName" placeholder="Unesite ime ..."
+        required minlength="2" maxlength="30" pattern="[a-zA-Z]*" [(ngModel)]="newParent.firstName" name="firstName">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Prezime:</label>
+        <input type="text" class="form-control" id="lastName" placeholder="Unesite prezime ..."
+        required minlength="2" maxlength="30" pattern="[a-zA-Z]*" [(ngModel)]="newParent.lastName" name="lastName">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Unesite email ..."
+        required [(ngModel)]="newParent.email" name="email">
+      </div>
+      <div *ngIf="addedParent" class="alert alert-success mt-4 fade show">Roditelj je uspešno dodat!</div><hr>
+      <button type="submit" class="btn btn-success" [disabled]="addedParent">Sačuvaj</button>
+    </form>
+  </div>
+</ng-template>
+
+<!--  Tabela sa svim roditeljima  -->
+<table class="table table-striped table-hover tabela">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Ime i prezime</th>
+      <th scope="col">Korisničko ime</th>
+      <th scope="col">Email</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let parent of parents">
+      <th class="clickable" scope="row" routerLink="/admin/parents/{{parent.id}}">{{parent.id}}</th>
+      <td class="clickable" routerLink="/admin/parents/{{parent.id}}">{{parent.firstName}} {{parent.lastName}}</td>
+      <td class="clickable" routerLink="/admin/parents/{{parent.id}}">{{parent.username}}</td>
+      <td class="clickable" routerLink="/admin/parents/{{parent.id}}">{{parent.email}}</td>
+      <td><button class="btn btn-secondary btn-sm float-right"
+        (click)="deleteParent(parent.id, parent.firstName, parent.lastName)">Ukloni</button></td>
+    </tr>
+  </tbody>
+</table>

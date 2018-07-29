@@ -1,0 +1,21 @@
+<h4 class="mt-4 mb-4">Predmeti:</h4>
+<table class="table table-striped table-hover tabela">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Naziv</th>
+        <th scope="col">Školska godina</th>
+        <th scope="col">Polugodište</th>
+        <th scope="col">Profesor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tc of teacherCourses">
+        <th class="clickable" routerLink="/student/{{studentId}}/courses/{{tc.id}}/grades" scope="row">{{tc.id}}</th>
+        <td class="clickable" routerLink="/student/{{studentId}}/courses/{{tc.id}}/grades">{{tc.course.name}}</td>
+        <td class="clickable" routerLink="/student/{{studentId}}/courses/{{tc.id}}/grades">{{tc.course.year}}</td>
+        <td class="clickable" routerLink="/student/{{studentId}}/courses/{{tc.id}}/grades">{{tc.course.semester}}</td>
+        <td class="clickable" routerLink="/student/{{studentId}}/courses/{{tc.id}}/grades">{{tc.teacher.firstName + ' ' + tc.teacher.lastName}}</td>
+      </tr>
+    </tbody>
+  </table>

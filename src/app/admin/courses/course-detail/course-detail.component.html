@@ -1,0 +1,72 @@
+<div class="row detalji">
+  <!--  Detalji predmeta  -->
+  <div class="col-md-6 detalji-1">
+    <h4>Detalji predmeta:</h4>
+    <form #forma="ngForm" ngNativeValidate (submit)="updateCourse()">
+      <fieldset [disabled]="formDisabled">
+
+        <div class="form-group">
+          <label for="name">Naziv predmeta:</label>
+          <input type="text" class="form-control" id="name" placeholder="Unesite naziv ..." required autofocus minlength="5" maxlength="30"
+            pattern="[a-zA-Z0-9\s,]*" [(ngModel)]="course.name" name="name" disabled>
+        </div>
+        <div class="form-group">
+          <label for="year">Školska godina:</label>
+          <select class="form-control" id="year" name="year" [(ngModel)]="course.year" required>
+            <option [ngValue]="'FIRST'">Prva</option>
+            <option [ngValue]="'SECOND'">Druga</option>
+            <option [ngValue]="'THIRD'">Treća</option>
+            <option [ngValue]="'FOURTH'">Četvrta</option>
+            <option [ngValue]="'FIFTH'">Peta</option>
+            <option [ngValue]="'SIXTH'">Šesta</option>
+            <option [ngValue]="'SEVENTH'">Sedma</option>
+            <option [ngValue]="'EIGHTH'">Osma</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="semester">Polugodište:</label>
+          <select class="form-control" id="semester" name="semester" [(ngModel)]="course.semester" required>
+            <option [ngValue]="'FALL'">Prvo</option>
+            <option [ngValue]="'SPRING'">Drugo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="weeklyHours">Nedeljni fond:</label>
+          <input type="number" class="form-control" id="weeklyHours" placeholder="Unesite broj časova ..." min="0" max="40" required
+            [(ngModel)]="course.weeklyHours" name="weeklyHours">
+        </div>
+
+      </fieldset>
+      <div class="clearfix" *ngIf="formDisabled">
+        <button class="btn btn-outline-primary float-right" type="button" (click)="formDisabled = false; updated = false">Izmeni predmet</button>
+        <button class="btn btn-outline-warning float-left" type="button" (click)="goBack()">Idi nazad</button>
+      </div>
+      <div class="clearfix" *ngIf="formDisabled === false">
+        <button class="btn btn-outline-success float-left" type="submit">Sačuvaj izmene</button>
+        <button class="btn btn-outline-warning float-right" type="button" (click)="formDisabled = true">Odustani</button>
+      </div>
+      <div *ngIf="updated" class="alert alert-success mt-4 fade show">Predmet je uspešno izmenjen!</div>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div class="clearfix">
+      <h4 class="float-left mt-2 mb-2">Profesori koji predaju predmet:</h4>
+    </div>
+
+    <!--  Tabela sa profesorima koji predaju predmet  -->
+    <table class="table table-striped table-hover tabela">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Ime i prezime</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teacher of teachers">
+          <th scope="row">{{teacher.id}}</th>
+          <td>{{teacher.firstName}} {{teacher.lastName}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

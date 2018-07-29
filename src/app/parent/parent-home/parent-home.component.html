@@ -1,0 +1,18 @@
+<div class="row ekran">
+  <div class="col-lg-3 sidenav card-body">
+    <h4 class="card-header text-center text-muted">Glavni meni</h4>
+    <ngb-accordion [closeOthers]="true">
+      <ngb-panel id="static-2" title="Učenici">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a routerLink="/parent/{{parentId}}/children" class="list-group-item list-group-item-action">Prikaži sve</a>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+
+  <div class="col-lg-9 sadrzaj">
+    <router-outlet></router-outlet>
+  </div>
+</div>

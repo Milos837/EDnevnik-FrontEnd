@@ -1,0 +1,76 @@
+<div class="clearfix">
+  <h2 class="float-left mt-4 mb-4">Lista predmeta:</h2>
+  <button type="button" class="btn btn-success float-right mt-4 mb-4" (click)="open(content)">Dodaj predmet</button>
+</div>
+
+<!--  Modal za dodavanje predmeta  -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header bg-light">
+      <h4 class="modal-title" id="modal-basic-title">Dodaj predmet</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form ngNativeValidate #courseForm="ngForm" (submit)="addCourse()">
+        <div class="form-group">
+          <label for="name">Naziv predmeta:</label>
+          <input type="text" class="form-control" id="name" placeholder="Unesite naziv ..."
+            required autofocus minlength="5" maxlength="30" pattern="[a-zA-Z0-9\s,]*" [(ngModel)]="newCourse.name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="year">Školska godina:</label>
+            <select class="form-control" id="year" name="year" [(ngModel)]="newCourse.year" required>
+              <option [ngValue]="'FIRST'">Prva</option>
+              <option [ngValue]="'SECOND'">Druga</option>
+              <option [ngValue]="'THIRD'">Treća</option>
+              <option [ngValue]="'FOURTH'">Četvrta</option>
+              <option [ngValue]="'FIFTH'">Peta</option>
+              <option [ngValue]="'SIXTH'">Šesta</option>
+              <option [ngValue]="'SEVENTH'">Sedma</option>
+              <option [ngValue]="'EIGHTH'">Osma</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="semester">Polugodište:</label>
+            <select class="form-control" id="semester" name="semester" [(ngModel)]="newCourse.semester" required>
+              <option [ngValue]="'FALL'">Prvo</option>
+              <option [ngValue]="'SPRING'">Drugo</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <label for="weeklyHours">Nedeljni fond:</label>
+          <input type="number" class="form-control" id="weeklyHours" placeholder="Unesite broj časova ..."
+          min="0" max="40" required [(ngModel)]="newCourse.weeklyHours" name="weeklyHours">
+        </div>
+        <div *ngIf="addedCourse" class="alert alert-success mt-4 fade show">Predmet je uspešno dodat!</div><hr>
+        <button type="submit" class="btn btn-success" [disabled]="addedCourse">Sačuvaj</button>
+      </form>
+    </div>
+  </ng-template>
+
+<!--  Tabela sa svim predmetima  -->
+<table class="table table-striped table-hover tabela">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Naziv</th>
+      <th scope="col">Školska godina</th>
+      <th scope="col">Polugodište</th>
+      <th scope="col">Nedeljni fond</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let course of courses">
+      <th class="clickable" routerLink="/admin/courses/{{course.id}}" scope="row">{{course.id}}</th>
+      <td class="clickable" routerLink="/admin/courses/{{course.id}}">{{course.name}}</td>
+      <td class="clickable" routerLink="/admin/courses/{{course.id}}">{{course.year}}</td>
+      <td class="clickable" routerLink="/admin/courses/{{course.id}}">{{course.semester}}</td>
+      <td class="clickable" routerLink="/admin/courses/{{course.id}}">{{course.weeklyHours}}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm float-right" (click)="deleteCourse(course.id, course.name)">Ukloni</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

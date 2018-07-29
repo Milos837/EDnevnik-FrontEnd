@@ -1,0 +1,21 @@
+<div class="clearfix">
+  <h2 class="float-left mt-4 mb-4">Lista učenika:</h2>
+</div>
+
+<!--  Tabela sa svim učenicima  -->
+<table class="table table-striped table-hover tabela">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Ime i prezime</th>
+      <th scope="col">Korisničko ime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of students">
+      <th class="clickable" routerLink="/parent/{{parentId}}/children/{{student.id}}/courses">{{student.id}}</th>
+      <td class="clickable" routerLink="/parent/{{parentId}}/children/{{student.id}}/courses">{{student.firstName}} {{student.lastName}}</td>
+      <td class="clickable" routerLink="/parent/{{parentId}}/children/{{student.id}}/courses">{{student.username}}</td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,12 @@
+.sidenav {
+  padding-top: 100px;
+  /* height: calc(100vh - 56px - 60px); */
+}
+
+.ekran {
+  width: 100vw;
+}
+
+.sadrzaj {
+  padding-top: 50px;
+}

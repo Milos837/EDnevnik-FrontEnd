@@ -1,0 +1,53 @@
+<div class="row ekran">
+  <div class="col-lg-3 sidenav card-body">
+    <h4 class="card-header text-center text-muted">Glavni meni</h4>
+    <ngb-accordion [closeOthers]="true">
+      <ngb-panel id="static-1" title="Profesori">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a routerLink="/admin/teachers" class="list-group-item list-group-item-action">Prikaži sve</a>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="static-2" title="Predmeti">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a routerLink="/admin/courses" class="list-group-item list-group-item-action">Prikaži sve</a>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="static-3" title="Odeljenja">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a routerLink="/admin/classes" class="list-group-item list-group-item-action">Prikaži sve</a>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="static-4" title="Učenici">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a routerLink="/admin/students" class="list-group-item list-group-item-action">Prikaži sve</a>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="static-5" title="Roditelji">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a routerLink="/admin/parents" class="list-group-item list-group-item-action">Prikaži sve</a>
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="static-6" title="Održavanje">
+        <ng-template ngbPanelContent>
+          <div class="list-group">
+            <a routerLink="/admin/logs" class="list-group-item list-group-item-action">Logovi</a>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+  </div>
+
+  <div class="col-lg-9 sadrzaj">
+    <router-outlet></router-outlet>
+  </div>
+</div>

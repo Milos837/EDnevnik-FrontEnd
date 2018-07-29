@@ -1,0 +1,93 @@
+<div class="row detalji">
+  <!--  Detalji profesora  -->
+  <div class="col-md-6 detalji-1">
+    <h4>Detalji profesora:</h4>
+    <form #forma="ngForm" ngNativeValidate (submit)="updateTeacher()">
+      <fieldset [disabled]="formDisabled" >
+        <div class="form-group">
+          <label for="name">Ime:</label>
+          <input class="form-control" type="text" name="firstName" [(ngModel)]="teacher.firstName" tabindex="2" required
+          minlength="2" maxlength="30" pattern="[a-zA-Z]*"/>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Prezime:</label>
+          <input class="form-control" type="text" name="lastName" [(ngModel)]="teacher.lastName" tabindex="3" required
+          minlength="2" maxlength="30" pattern="[a-zA-Z]*"/>
+        </div>
+
+        <div class="form-group">
+          <label for="username">Korisničko ime:</label>
+          <input class="form-control" type="text" rows="3" name="username" [(ngModel)]="teacher.username" tabindex="4" required disabled/>
+        </div>
+      </fieldset>
+      <div class="clearfix" *ngIf="formDisabled">
+        <button class="btn btn-outline-primary float-right" type="button" (click)="formDisabled = false; updated = false"
+          tabindex="6">Izmeni profesora</button>
+        <button class="btn btn-outline-warning float-left" type="button" tabindex="7" (click)="goBack()">Idi nazad</button>
+      </div>
+      <div class="clearfix" *ngIf="formDisabled === false">
+        <button class="btn btn-outline-success float-left" type="submit" tabindex="6">Sačuvaj izmene</button>
+        <button class="btn btn-outline-warning float-right" type="button" tabindex="7" (click)="formDisabled = true">Odustani</button>
+      </div>
+      <div *ngIf="updated" class="alert alert-success mt-4 fade show">Profesor je uspešno izmenjen!</div>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div class="clearfix">
+      <h4 class="float-left mt-2 mb-2">Predmeti koje predaje:</h4>
+      <button type="button" class="btn btn-success float-right mt-2 mb-2" (click)="open(content)">Dodaj predmet</button>
+    </div>
+
+    <!--  Tabela sa predmetima profesora  -->
+    <table class="table table-striped table-hover tabela">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Naziv</th>
+          <th scope="col">Školska godina</th>
+          <th scope="col">Polugodište</th>
+          <th scope="col">Nedeljni fond</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of courses">
+          <th scope="row">{{course.id}}</th>
+          <td>{{course.name}}</td>
+          <td>{{course.year}}</td>
+          <td>{{course.semester}}</td>
+          <td>{{course.weeklyHours}}</td>
+          <td><button class="btn btn-secondary btn-sm" (click)="removeCourse(course.id, course.name)" >Ukloni</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--  Modal za dodeljivanje predmeta profesoru  -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header bg-light">
+    <h4 class="modal-title" id="modal-basic-title">Dodeli predmet:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngNativeValidate (ngSubmit)="addCourse()" #courseForm="ngForm">
+      <div class="form-group">
+        <label for="course">Izaberite predmet:</label>
+        <select class="form-control" name="newcourse" [(ngModel)]="newcourse" #course tabindex="5" required>
+          <option *ngFor="let course of allCourses" [ngValue]="course">{{course.name}}</option>
+        </select>
+      </div>
+      <small>Školska godina: {{newcourse.year}}</small><br>
+      <small>Polugodište: {{newcourse.semester}}</small><br>
+      <small>Nedeljni broj časova: {{newcourse.weeklyHours}}</small><br>
+      <div *ngIf="greska" class="alert alert-danger mt-4 fade show">Greška: profesor već predaje izabrani predmet.</div>
+      <div *ngIf="dodat" class="alert alert-success mt-4 fade show">Predmet je uspešno dodat!</div>
+      <hr>
+      <button type="submit" class="btn btn-success" [disabled]="dodat" >Dodaj</button>
+    </form>
+  </div>
+</ng-template>

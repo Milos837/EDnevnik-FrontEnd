@@ -1,0 +1,73 @@
+
+<div class="clearfix">
+  <h2 class="float-left mt-4 mb-4">Lista profesora:</h2>
+  <button type="button" class="btn btn-success float-right mt-4 mb-4"
+  (click)="open(content)" >Dodaj profesora</button>
+</div>
+
+
+<!--  Modal za dodavanje profesora  -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header bg-light">
+    <h4 class="modal-title" id="modal-basic-title">Dodaj profesora</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form ngNativeValidate #teacherForm="ngForm" (submit)="addTeacher()">
+      <div class="form-group">
+        <label for="username">Korisnčko ime:</label>
+        <input type="text" class="form-control" id="username" placeholder="Unesite korisničko ime ..."
+          required autofocus minlength="5" maxlength="15" pattern="[a-zA-Z0-9]*" [(ngModel)]="newTeacher.username" name="username">
+          <div *ngIf="existingUsername" class="help-block text-danger">Korisničko ime već postoji</div>
+      </div>
+      <div class="form-group">
+        <label for="password">Lozinka:</label>
+        <input type="password" class="form-control" id="password" placeholder="Unesite lozinku ..."
+        required minlength="5" maxlength="15" pattern="[a-zA-Z0-9]*" [(ngModel)]="newTeacher.password" name="password">
+        <div *ngIf="passwordMissmatch" class="help-block text-danger">Lozinke se ne poklapaju</div>
+      </div>
+      <div class="form-group">
+        <label for="password1">Ponovite lozinku:</label>
+        <input type="password" class="form-control" id="password1" placeholder="Unesite lozinku ..."
+        required minlength="5" maxlength="15" pattern="[a-zA-Z0-9]*" [(ngModel)]="newTeacher.confirmedPassword" name="confirmedPassword">
+        <div *ngIf="passwordMissmatch" class="help-block text-danger">Lozinke se ne poklapaju</div>
+      </div>
+      <div class="form-group">
+        <label for="firstName">Ime:</label>
+        <input type="text" class="form-control" id="firstName" placeholder="Unesite ime ..."
+        required minlength="2" maxlength="30" pattern="[a-zA-Z]*" [(ngModel)]="newTeacher.firstName" name="firstName">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Prezime:</label>
+        <input type="text" class="form-control" id="lastName" placeholder="Unesite prezime ..."
+        required minlength="2" maxlength="30" pattern="[a-zA-Z]*" [(ngModel)]="newTeacher.lastName" name="lastName">
+      </div>
+      <div *ngIf="addedTeacher" class="alert alert-success mt-4 fade show">Profesor je uspešno dodat!</div><hr>
+      <button type="submit" class="btn btn-success" [disabled]="addedTeacher">Sačuvaj</button>
+    </form>
+  </div>
+</ng-template>
+
+
+<!--  Tabela sa svim profesorima  -->
+<table class="table table-striped table-hover tabela">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Ime i prezime</th>
+      <th scope="col">Korisničko ime</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let teacher of teachers">
+      <th class="clickable" scope="row" routerLink="/admin/teachers/{{teacher.id}}">{{teacher.id}}</th>
+      <td class="clickable" routerLink="/admin/teachers/{{teacher.id}}">{{teacher.firstName}} {{teacher.lastName}}</td>
+      <td class="clickable" routerLink="/admin/teachers/{{teacher.id}}">{{teacher.username}}</td>
+      <td><button class="btn btn-secondary btn-sm float-right"
+        (click)="deleteTeacher(teacher.id, teacher.firstName, teacher.lastName)">Ukloni</button></td>
+    </tr>
+  </tbody>
+</table>

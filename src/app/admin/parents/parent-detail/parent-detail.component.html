@@ -1,0 +1,90 @@
+<div class="row detalji">
+  <!--  Detalji roditelja  -->
+  <div class="col-md-6 detalji-1">
+    <h4>Detalji roditelja:</h4>
+    <form #forma="ngForm" ngNativeValidate (submit)="updateParent()">
+      <fieldset [disabled]="formDisabled" >
+        <div class="form-group">
+          <label for="name">Ime:</label>
+          <input class="form-control" type="text" name="firstName" [(ngModel)]="parent.firstName" tabindex="2" required
+          minlength="2" maxlength="30" pattern="[a-zA-Z]*"/>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Prezime:</label>
+          <input class="form-control" type="text" name="lastName" [(ngModel)]="parent.lastName" tabindex="3" required
+          minlength="2" maxlength="30" pattern="[a-zA-Z]*"/>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Unesite email ..."
+          required [(ngModel)]="parent.email" name="email">
+        </div>
+
+        <div class="form-group">
+          <label for="username">Korisničko ime:</label>
+          <input class="form-control" type="text" rows="3" name="username" [(ngModel)]="parent.username" tabindex="4" required disabled/>
+        </div>
+      </fieldset>
+      <div class="clearfix" *ngIf="formDisabled">
+        <button class="btn btn-outline-primary float-right" type="button" (click)="formDisabled = false; updated = false"
+          tabindex="6">Izmeni roditelja</button>
+        <button class="btn btn-outline-warning float-left" type="button" tabindex="7" (click)="goBack()">Idi nazad</button>
+      </div>
+      <div class="clearfix" *ngIf="formDisabled === false">
+        <button class="btn btn-outline-success float-left" type="submit" tabindex="6">Sačuvaj izmene</button>
+        <button class="btn btn-outline-warning float-right" type="button" tabindex="7" (click)="formDisabled = true">Odustani</button>
+      </div>
+      <div *ngIf="updated" class="alert alert-success mt-4 fade show">Učenik je uspešno izmenjen!</div>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <div class="clearfix">
+      <h4 class="float-left mt-2 mb-2">Deca:</h4>
+      <button type="button" class="btn btn-success float-right mt-2 mb-2" (click)="open(content)">Dodaj učenika</button>
+    </div>
+
+    <!--  Tabela sa decom roditelja  -->
+    <table class="table table-striped table-hover tabela">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Ime i prezime</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let child of children">
+            <th scope="row">{{child.id}}</th>
+            <td>{{child.firstName}} {{child.lastName}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+</div>
+
+<!--  Modal za dodeljivanje učenika roditelju  -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header bg-light">
+      <h4 class="modal-title" id="modal-basic-title">Dodeli učenika:</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form ngNativeValidate (ngSubmit)="addChild()" #courseForm="ngForm">
+        <div class="form-group">
+          <label for="course">Izaberite učenika:</label>
+          <select class="form-control" name="newstudent" [(ngModel)]="newstudent" #course tabindex="5" required>
+            <option *ngFor="let student of allStudents" [ngValue]="student">{{student.firstName + ' ' + student.lastName}}</option>
+          </select>
+        </div>
+        <small>ID: {{newstudent.id}}</small><br>
+        <small>Korisničko ime: {{newstudent.username}}</small><br>
+        <div *ngIf="greska" class="alert alert-danger mt-4 fade show">Greška: učenik već registrovan kao dete ovog roditelja.</div>
+        <div *ngIf="dodat" class="alert alert-success mt-4 fade show">Učenik je uspešno dodat!</div>
+        <hr>
+        <button type="submit" class="btn btn-success" [disabled]="dodat" >Dodaj</button>
+      </form>
+    </div>
+  </ng-template>
